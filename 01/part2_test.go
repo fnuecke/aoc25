@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestExampleInput(t *testing.T) {
+func TestExampleInput2(t *testing.T) {
 	input := []Action{
 		{L, 68},
 		{L, 30},
@@ -18,7 +18,7 @@ func TestExampleInput(t *testing.T) {
 		{L, 82},
 	}
 
-	result := Run(input)
+	result := Run2(input)
 
 	if result != 6 {
 		t.Errorf(`%d != %d`, result, 6)
@@ -32,14 +32,14 @@ func TestOverflowAndUnderflow(t *testing.T) {
 		{L, 150},
 	}
 
-	result := Run(input)
+	result := Run2(input)
 
 	if result != 6 {
 		t.Errorf(`%d != %d`, result, 6)
 	}
 }
 
-func TestRealInput(t *testing.T) {
+func TestRealInput2(t *testing.T) {
 	input := []Action{
 		{R, 19},
 		{R, 5},
@@ -4360,7 +4360,7 @@ func TestRealInput(t *testing.T) {
 		{R, 41},
 	}
 
-	result := Run(input)
+	result := Run2(input)
 
 	t.Errorf(`Result = %d`, result)
 }
