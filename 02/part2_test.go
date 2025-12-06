@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestExampleInput(t *testing.T) {
+func TestExampleInput2(t *testing.T) {
 	input := []Range{
 		{11, 22},
 		{95, 115},
@@ -19,14 +19,14 @@ func TestExampleInput(t *testing.T) {
 		{2121212118, 2121212124},
 	}
 
-	result := Run1(input)
+	result := Run2(input)
 
-	if result != 1227775554 {
-		t.Errorf(`%d != %d`, result, 1227775554)
+	if result != 4174379265 {
+		t.Errorf(`%d != %d`, result, 4174379265)
 	}
 }
 
-func TestRealInput(t *testing.T) {
+func TestRealInput2(t *testing.T) {
 	input := []Range{
 		{24, 46},
 		{124420, 259708},
@@ -63,7 +63,7 @@ func TestRealInput(t *testing.T) {
 		{119, 335},
 	}
 
-	result := Run1(input) // 38310256125
+	result := Run2(input) // 58961152806
 
 	t.Errorf(`Result = %d`, result)
 }

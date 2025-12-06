@@ -1,15 +1,16 @@
 package main
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
 
-func Run(input []Range) int {
+func Run1(input []Range) int {
 	acc := 0
 	for _, r := range input {
 		invalid := make(chan int)
-		go get_invalid(r, invalid)
+		go get_invalid(r, 2, invalid)
 		for v := range invalid {
 			acc += v
 		}
@@ -17,14 +18,34 @@ func Run(input []Range) int {
 	return acc
 }
 
-func get_invalid(r Range, result chan int) {
+func Run2(input []Range) int {
+	acc := 0
+	for _, r := range input {
+		max_reps := len(strconv.Itoa(r.last_id))
+		seen := []int{}
+		for reps := 2; reps <= max_reps; reps++ {
+			invalid := make(chan int)
+			go get_invalid(r, reps, invalid)
+			for v := range invalid {
+				if slices.Contains(seen, v) {
+					continue
+				}
+				seen = append(seen, v)
+				acc += v
+			}
+		}
+	}
+	return acc
+}
+
+func get_invalid(r Range, num_reps int, result chan int) {
 	first_s := strconv.Itoa(r.first_id)
 	last_s := strconv.Itoa(r.last_id)
 	min_len := len(first_s)
 	max_len := len(last_s)
 	for cur_len := min_len; cur_len <= max_len; cur_len++ {
-		if cur_len%2 != 0 {
-			continue // cannot contain same equal length sequences
+		if cur_len%num_reps != 0 {
+			continue // cannot contain num_reps equal length sequences
 		}
 
 		var start, end string
@@ -42,13 +63,17 @@ func get_invalid(r Range, result chan int) {
 		// yeah, this can be optimized further, too lazy right now
 		start_i, _ := strconv.Atoi(start)
 		end_i, _ := strconv.Atoi(end)
+	outer:
 		for i := start_i; i <= end_i; i++ {
 			s := strconv.Itoa(i)
-			left := s[cur_len/2:]
-			right := s[:cur_len/2]
-			if left == right {
-				result <- i
+			left := s[:cur_len/num_reps]
+			for j := 1; j < num_reps; j++ {
+				right := s[cur_len/num_reps*j : cur_len/num_reps*(j+1)]
+				if left != right {
+					continue outer
+				}
 			}
+			result <- i
 		}
 	}
 	close(result)
